@@ -1,0 +1,43 @@
+{
+  "id": "1752766059640",
+  "title": "Hello Chat",
+  "messages": [
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "hey"
+        }
+      ],
+      "id": "QMCae1f979WnuL7z",
+      "role": "user",
+      "metadata": {
+        "createdAt": 1752770023694
+      }
+    },
+    {
+      "id": "",
+      "metadata": {
+        "createdAt": 1752770024501
+      },
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Hey! How can I assist you today?",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_687925e88004819bba6a474b853b53020f16c47849863b83"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    }
+  ],
+  "createdAt": 1752769381790,
+  "activeStreamId": null
+}

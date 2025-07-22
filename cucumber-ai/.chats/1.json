@@ -1,0 +1,145 @@
+{
+  "id": "1",
+  "title": "Simple Chat",
+  "messages": [
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "hey"
+        }
+      ],
+      "id": "2bJEHpCdwmXvpxXX",
+      "role": "user",
+      "metadata": {
+        "createdAt": 1752770436872
+      }
+    },
+    {
+      "id": "",
+      "metadata": {
+        "createdAt": 1752770448192
+      },
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Hey! How can I help you today?",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_6879278e07dc819b85fe4ddb52ba5c41031b8d83362b3f40"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "Hello"
+        }
+      ],
+      "id": "9090wyx2kGbahPNd",
+      "role": "user"
+    },
+    {
+      "id": "",
+      "metadata": {
+        "createdAt": 1752770513356
+      },
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "Hello again! What's on your mind?",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_687927cf2e78819b805c268e1413bd68031b8d83362b3f40"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "what's the time right now"
+        }
+      ],
+      "id": "B5fuOB50htIWp0UH",
+      "role": "user",
+      "metadata": {
+        "createdAt": 1752858188352
+      }
+    },
+    {
+      "id": "",
+      "metadata": {
+        "createdAt": 1752858191770
+      },
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "I can't check the current time, but you can easily look at a clock or your device's screen for that information. Is there anything else you need help with?",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_687a7e519e40819b8964238c12c81b5f031b8d83362b3f40"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    },
+    {
+      "parts": [
+        {
+          "type": "text",
+          "text": "how to convert time to my local time"
+        }
+      ],
+      "id": "k012Vrydcq0hhyzQ",
+      "role": "user",
+      "metadata": {
+        "createdAt": 1752859111556
+      }
+    },
+    {
+      "id": "",
+      "metadata": {
+        "createdAt": 1752859111681
+      },
+      "role": "assistant",
+      "parts": [
+        {
+          "type": "step-start"
+        },
+        {
+          "type": "text",
+          "text": "To convert time to your local time, follow these steps:\n\n1. **Know the Original Time Zone**: Identify the time zone of the original time you want to convert.\n\n2. **Find Your Time Zone**: Determine your local time zone and any differences (e.g., UTC±X hours).\n\n3. **Calculate the Difference**: \n   - If the original time zone is ahead of your local time, subtract the difference.\n   - If it’s behind, add the difference.\n\n4. **Adjust for Daylight Saving Time**: Check if either zone is observing Daylight Saving Time, as this can affect the time difference.\n\n### Example\n\n- Original time: 3:00 PM (UTC)\n- Your time zone: UTC-5 (Eastern Standard Time)\n- Time difference: 5 hours behind\n\n**Calculation**:\n- 3:00 PM - 5 hours = 10:00 AM\n\nSo, 3:00 PM UTC is 10:00 AM in your local time.\n\nIf you want to share specific times or time zones, I can help with that!",
+          "providerMetadata": {
+            "openai": {
+              "itemId": "msg_687a81e4a1d8819bbc9591259f620514031b8d83362b3f40"
+            }
+          },
+          "state": "done"
+        }
+      ]
+    }
+  ],
+  "createdAt": 1752770421900,
+  "activeStreamId": null
+}
