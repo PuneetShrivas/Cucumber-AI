@@ -1,0 +1,137 @@
+[
+    {
+        "id": 1,
+        "header": "Google Ads Overview",
+        "type": "Ad Performance",
+        "status": "In Process",
+        "target": "18",
+        "limit": "5",
+        "reviewer": "Amit Sharma"
+    },
+    {
+        "id": 2,
+        "header": "Meta Ads Summary",
+        "type": "Ad Performance",
+        "status": "Done",
+        "target": "29",
+        "limit": "24",
+        "reviewer": "Priya Singh"
+    },
+    {
+        "id": 3,
+        "header": "Campaign Executive Summary",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "10",
+        "limit": "13",
+        "reviewer": "Rahul Verma"
+    },
+    {
+        "id": 4,
+        "header": "Technical Campaign Approach",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "27",
+        "limit": "23",
+        "reviewer": "Sneha Patel"
+    },
+    {
+        "id": 5,
+        "header": "Creative Design Assets",
+        "type": "Narrative",
+        "status": "In Process",
+        "target": "2",
+        "limit": "16",
+        "reviewer": "Vikram Desai"
+    },
+    {
+        "id": 6,
+        "header": "Audience Capabilities",
+        "type": "Narrative",
+        "status": "In Process",
+        "target": "20",
+        "limit": "8",
+        "reviewer": "Neha Gupta"
+    },
+    {
+        "id": 7,
+        "header": "Integration with Analytics Tools",
+        "type": "Narrative",
+        "status": "In Process",
+        "target": "19",
+        "limit": "21",
+        "reviewer": "Rohan Mehta"
+    },
+    {
+        "id": 8,
+        "header": "Innovation in Ad Strategies",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "25",
+        "limit": "26",
+        "reviewer": "Anjali Joshi"
+    },
+    {
+        "id": 9,
+        "header": "Instagram Engagement Overview",
+        "type": "Social Content",
+        "status": "Done",
+        "target": "7",
+        "limit": "23",
+        "reviewer": "Karan Malhotra"
+    },
+    {
+        "id": 10,
+        "header": "Advanced Targeting Algorithms",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "30",
+        "limit": "28",
+        "reviewer": "Deepika Rao"
+    },
+    {
+        "id": 11,
+        "header": "Adaptive Communication Channels",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "9",
+        "limit": "31",
+        "reviewer": "Siddharth Jain"
+    },
+    {
+        "id": 12,
+        "header": "Advantages Over Previous Campaigns",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "12",
+        "limit": "0",
+        "reviewer": "Meera Iyer"
+    },
+    {
+        "id": 13,
+        "header": "Past Campaign Performance",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "22",
+        "limit": "33",
+        "reviewer": "Arjun Kapoor"
+    },
+    {
+        "id": 14,
+        "header": "Customer Reviews and Satisfaction",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "15",
+        "limit": "34",
+        "reviewer": "Pooja Nair"
+    },
+    {
+        "id": 15,
+        "header": "Implementation Challenges and Solutions",
+        "type": "Narrative",
+        "status": "Done",
+        "target": "3",
+        "limit": "35",
+        "reviewer": "Manish Choudhary"
+    }
+]

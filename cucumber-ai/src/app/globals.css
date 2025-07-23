@@ -171,3 +171,26 @@ body {
     letter-spacing: var(--tracking-normal);
   }
 }
+
+@layer utilities {
+  .eye-catching-button {
+    @apply relative  text-white tracking-wide duration-[2200ms] bg-[length:200%_100%];
+
+    /* Light green to mint base */
+    @apply bg-[linear-gradient(110deg,#3CB97C_45%,#72E3AD_55%,#3CB97C)];
+
+    /* Hover shifts to deep green */
+    @apply hover:bg-[linear-gradient(110deg,#206143_45%,#2E9C65_55%,#206143)];
+
+    animation: bg-shine 2.1s linear infinite;
+  }
+}
+
+@keyframes bg-shine {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

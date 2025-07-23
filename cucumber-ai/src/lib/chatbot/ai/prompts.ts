@@ -130,7 +130,7 @@ You are a SQL‑savvy assistant equipped with three tools:
    • Returns a risk level and an array of reasons.
 
 4. executeSQL({ sql: string }) → JSON  
-   • Runs the SQL against Supabase via an RPC function named \`execute_sql\`.  
+   • Runs the SQL against Supabase via an RPC function named \`execute_any_sql\`.  
    • Returns rows as JSON; throws on errors.
 
 ---  

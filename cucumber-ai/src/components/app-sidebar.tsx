@@ -30,6 +30,8 @@ import {
   Settings,
   Banknote,
   PlugZap,
+  Camera,
+  ChartBarIncreasingIcon,
 } from "lucide-react"
 import {
   Bolt,
@@ -73,8 +75,13 @@ const majorNavItems = [
   },
   {
     title: "Analytics",
-    url: "/dashboard/analytics/sales-reports",
+    url: "/dashboard",
     icon: BarChart3,
+  },
+  {
+    title: "Digital Marketing",
+    url: "/dashboard/digital-marketing",
+    icon: Megaphone,
   },
   {
     title: "AI Assistant",
@@ -92,7 +99,7 @@ const accordionNavItems = [
       { title: "Kitchen Display", url: "/dashboard/live-operations/kitchen-display", icon: LocateFixed },
       { title: "Table Management", url: "/dashboard/live-operations/table-management", icon: Table2 },
       { title: "Order Tracking", url: "/dashboard/live-operations/order-tracking", icon: ClipboardList },
-      {title: "Deliveries", url: "/dashboard/live-operations/deliveries", icon: Truck },
+      { title: "Deliveries", url: "/dashboard/live-operations/deliveries", icon: Truck },
     ],
   },
   {
@@ -143,6 +150,18 @@ const accordionNavItems = [
       { title: "Performance Analytics", url: "/dashboard/analytics/performance-analytics", icon: LineChart },
       { title: "Customer Insights", url: "/dashboard/analytics/customer-insights", icon: PieChart },
       { title: "Operational Metrics", url: "/dashboard/analytics/operational-metrics", icon: BarChart3 },
+    ],
+  },
+  {
+    title: "Digital Marketing",
+    icon: Megaphone,
+    items: [
+      { title: "Dashboard", url: "/dashboard/digital-marketing", icon: ChartBarIncreasingIcon },
+      { title: "Google & Meta Ads", url: "/dashboard/digital-marketing/google-meta-ads", icon: Megaphone },
+      { title: "Campaigns & Promotions", url: "/dashboard/digital-marketing/campaigns-promotions", icon: Gift },
+      { title: "Reviews Management", url: "/dashboard/digital-marketing/reviews-management", icon: MessageSquare },
+      { title: "Instagram Management", url: "/dashboard/digital-marketing/instagram-management", icon: Camera },
+      { title: "SEO Optimization", url: "/dashboard/digital-marketing/seo-optimization", icon: Leaf },
     ],
   },
   {
@@ -246,112 +265,112 @@ function SidebarAccordion({ items }: { items: typeof accordionNavItems }) {
 }
 
 const allNavItems = [
-          ...majorNavItems.map(item => ({
-            title: item.title,
-            url: item.url,
-            icon: item.icon,
-            section: "Major",
-          })),
-          ...accordionNavItems.flatMap(section =>
-            section.items.map(item => ({
-              title: item.title,
-              url: item.url,
-              icon: item.icon,
-              section: section.title,
-            }))
-          ),
-          ...aiAssistantItems.map(item => ({
-            title: item.name,
-            url: item.url,
-            icon: item.icon,
-            section: "AI Assistant",
-          })),
-        ]
+  ...majorNavItems.map(item => ({
+    title: item.title,
+    url: item.url,
+    icon: item.icon,
+    section: "Major",
+  })),
+  ...accordionNavItems.flatMap(section =>
+    section.items.map(item => ({
+      title: item.title,
+      url: item.url,
+      icon: item.icon,
+      section: section.title,
+    }))
+  ),
+  ...aiAssistantItems.map(item => ({
+    title: item.name,
+    url: item.url,
+    icon: item.icon,
+    section: "AI Assistant",
+  })),
+]
 
-        function SidebarSearch() {
-          const [query, setQuery] = useState("")
-          const [results, setResults] = useState<typeof allNavItems>([])
-          const fuse = React.useMemo(
-            () =>
-              new Fuse(allNavItems, {
-                keys: ["title", "section"],
-                threshold: 0.4,
-              }),
-            []
-          )
+function SidebarSearch() {
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState<typeof allNavItems>([])
+  const fuse = React.useMemo(
+    () =>
+      new Fuse(allNavItems, {
+        keys: ["title", "section"],
+        threshold: 0.4,
+      }),
+    []
+  )
 
-          useEffect(() => {
-            if (query.trim().length === 0) {
-              setResults([])
-              return
-            }
-            setResults(fuse.search(query).map(res => res.item))
-          }, [query, fuse])
+  useEffect(() => {
+    if (query.trim().length === 0) {
+      setResults([])
+      return
+    }
+    setResults(fuse.search(query).map(res => res.item))
+  }, [query, fuse])
 
-          const [dropdownOpen, setDropdownOpen] = useState(false)
-          const inputRef = React.useRef<HTMLInputElement>(null)
-          const wrapperRef = React.useRef<HTMLDivElement>(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const inputRef = React.useRef<HTMLInputElement>(null)
+  const wrapperRef = React.useRef<HTMLDivElement>(null)
 
-          useEffect(() => {
-            setDropdownOpen(results.length > 0 && query.trim().length > 3)
-          }, [results, query])
+  useEffect(() => {
+    setDropdownOpen(results.length > 0 && query.trim().length > 3)
+  }, [results, query])
 
-          // Close dropdown when clicking outside
-          useEffect(() => {
-            if (!dropdownOpen) return
-            function handleClick(e: MouseEvent) {
-              if (
-                wrapperRef.current &&
-                !wrapperRef.current.contains(e.target as Node)
-              ) {
-                setDropdownOpen(false)
-                setQuery("")
-              }
-            }
-            document.addEventListener("mousedown", handleClick)
-            // Clear query when dropdown closes
-            return () => document.removeEventListener("mousedown", handleClick)
-          }, [dropdownOpen])
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!dropdownOpen) return
+    function handleClick(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setDropdownOpen(false)
+        setQuery("")
+      }
+    }
+    document.addEventListener("mousedown", handleClick)
+    // Clear query when dropdown closes
+    return () => document.removeEventListener("mousedown", handleClick)
+  }, [dropdownOpen])
 
-          return (
-            <div className="mt-2 -my-2 px-3" ref={wrapperRef}>
-              <div className="relative">
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  placeholder="Search menu..."
-                  className="w-full px-8 py-1 rounded border border-muted bg-background text-sm focus:outline-none"
-                  id="sidebar-search-input"
-                  autoComplete="off"
-                  onFocus={() => setDropdownOpen(results.length > 0 && query.trim().length > 0)}
-                />
-                <IconSearch className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
-              </div>
-              <DropdownMenu open={dropdownOpen} modal={false}>
-                <DropdownMenuTrigger asChild>
-                  {/* Hidden trigger, just to anchor the menu to the input */}
-                  <span tabIndex={-1} />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="top" align="start" className="w-[calc(100%-24px)] max-h-56 overflow-auto" style={{ marginLeft: 240 }}>
-                  {results.map(item => (
-                    <DropdownMenuItem asChild key={item.url}>
-                      <a
-                        href={item.url}
-                        className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted transition text-sm w-full"
-                        onClick={() => setDropdownOpen(false)}
-                      >
-                        <item.icon className="size-4" />
-                        <span>{item.title}</span>
-                      </a>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          )
-        }
+  return (
+    <div className="mt-2 -my-2 px-3" ref={wrapperRef}>
+      <div className="relative">
+        <input
+          ref={inputRef}
+          type="text"
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          placeholder="Search menu..."
+          className="w-full px-8 py-1 rounded border border-muted bg-background text-sm focus:outline-none"
+          id="sidebar-search-input"
+          autoComplete="off"
+          onFocus={() => setDropdownOpen(results.length > 0 && query.trim().length > 0)}
+        />
+        <IconSearch className="absolute left-2 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
+      </div>
+      <DropdownMenu open={dropdownOpen} modal={false}>
+        <DropdownMenuTrigger asChild>
+          {/* Hidden trigger, just to anchor the menu to the input */}
+          <span tabIndex={-1} />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="top" align="start" className="w-[calc(100%-24px)] max-h-56 overflow-auto" style={{ marginLeft: 240 }}>
+          {results.map(item => (
+            <DropdownMenuItem asChild key={item.url}>
+              <a
+                href={item.url}
+                className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted transition text-sm w-full"
+                onClick={() => setDropdownOpen(false)}
+              >
+                <item.icon className="size-4" />
+                <span>{item.title}</span>
+              </a>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  )
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [user, setUser] = useState<User | null>(null);
@@ -412,43 +431,44 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     if (!restaurant) return null;
     return (
       <div className="flex flex-col items-start gap-1 w-full">
-      <a
-        href="/dashboard/settings/restaurant-profile"
-        className="flex items-center gap-2 text-base font-semibold px-2 py-1 hover:underline"
-      >
-        <ChefHat className="size-5 text-primary" />
-        {restaurant.name}
-      </a>
-      {locations.length > 0 && (
-        <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted transition text-sm font-normal w-full">
-          <LocateFixed className="size-4 text-muted-foreground" />
-          {locations.find(l => l.id === activeLocation)?.name || "Select location"}
-          <ChevronDown className="size-4 ml-1" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
-          {locations.map(loc => (
-            <DropdownMenuItem
-            key={loc.id}
-            onClick={() => {
-              setActiveLocation(loc.id);
-              window.localStorage.setItem("activeLocation", loc.id);
-            }}
-            className={activeLocation === loc.id ? "font-bold" : ""}
-            >
-            <Table2 className="size-4 mr-2 text-muted-foreground" />
-            {loc.name}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+        <a
+          href="/dashboard/settings/restaurant-profile"
+          className="flex items-center gap-2 text-base font-semibold px-2 py-1 hover:underline"
+        >
+          <ChefHat className="size-5 text-primary" />
+          {restaurant.name}
+        </a>
+        {locations.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted transition text-sm font-normal w-full">
+                <LocateFixed className="size-4 text-muted-foreground" />
+                {locations.find(l => l.id === activeLocation)?.name || "Select location"}
+                <ChevronDown className="size-4 ml-1" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {locations.map(loc => (
+                <DropdownMenuItem
+                  key={loc.id}
+                  onClick={() => {
+                    setActiveLocation(loc.id);
+                    window.localStorage.setItem("activeLocation", loc.id);
+                  }}
+                  className={activeLocation === loc.id ? "font-bold" : ""}
+                >
+                  <Table2 className="size-4 mr-2 text-muted-foreground" />
+                  {loc.name}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     );
   };
 
+  const [showMajor, setShowMajor] = useState(true);
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -468,35 +488,53 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        {/* Major buttons */}
-        <div className="flex flex-col gap-1.5 mt-2 mx-2">
-          {majorNavItems.map((item) => {
-        const isActive = typeof window !== "undefined" && window.location.pathname === item.url
-        return (
-            <a
-            key={item.title}
-            href={item.url}
-            className={`
-            flex items-center gap-2 px-2.5 py-1.5 rounded-md font-semibold text-sm shadow
-            transition-all duration-150
-            bg-gradient-to-r
-            ${isActive
-            ? "from-[#206143] to-[#2E9C65]" // darker greens when active
-            : "from-[#3CB97C] to-[#72E3AD]"} // default green
-            hover:from-[#206143] hover:to-[#2E9C65]
-            text-white
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-            border border-transparent
-            ${isActive ? "ring-2 ring-primary border-primary" : ""}
-            `}
-            style={{ letterSpacing: "0.01em" }}
-            aria-current={isActive ? "page" : undefined}
-            >
-            <item.icon className="size-4 drop-shadow" />
-            {item.title}
-            </a>
-        )
-          })}
+        {/* Major buttons accordion */}
+        <div className="mt-2 mx-2">
+          <button
+            type="button"
+            className="flex items-center justify-between w-full mb-1 p-1 rounded hover:bg-muted transition"
+            aria-label="Toggle major sections"
+            onClick={() => setShowMajor(prev => !prev)}
+          >
+            <span className="text-sm font-semibold">Quick Actions</span>
+            <ChevronDown className={`size-4 transition-transform ${showMajor ? "" : "rotate-180"}`} />
+          </button>
+          {showMajor && (
+            <div className="flex flex-col gap-1.5">
+              {majorNavItems.map((item) => {
+              const isActive = typeof window !== "undefined" && window.location.pathname === item.url
+              const isAIAssistant = item.title === "AI Assistant"
+              return (
+                <a
+                key={item.title}
+                href={item.url}
+                className={`
+                  flex items-center gap-2 px-2.5 py-1.5 rounded-md font-semibold text-sm shadow
+                  transition-all duration-150
+                  bg-gradient-to-r
+                  ${isActive
+                  ? "from-[#206143] to-[#2E9C65]"
+                  : "from-[#3CB97C] to-[#72E3AD]"}
+                  hover:from-[#206143] hover:to-[#2E9C65]
+                  text-white
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
+                  border border-transparent
+                  ${isActive ? "ring-2 ring-primary border-primary" : ""}
+                  ${isAIAssistant
+                  ? "eye-catching-button"
+                  : ""
+                  }
+                `}
+                style={{ letterSpacing: "0.01em" }}
+                aria-current={isActive ? "page" : undefined}
+                >
+                <item.icon className="size-4 drop-shadow" />
+                {item.title}
+                </a>
+              )
+              })}
+            </div>
+          )}
         </div>
 
         <SidebarSearch />
@@ -509,8 +547,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         <NavSecondary
           items={[
-        // { title: "Search", url: "/dashboard/#", icon: IconSearch },
-        { title: "Get Help", url: "/dashboard//ai-assistant/help-support", icon: IconHelp },
+            // { title: "Search", url: "/dashboard/#", icon: IconSearch },
+            { title: "Get Help", url: "/dashboard//ai-assistant/help-support", icon: IconHelp },
           ]}
           className="mt-auto"
         />
