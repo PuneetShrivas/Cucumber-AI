@@ -1125,7 +1125,7 @@ function TemplatesRulesSection({ organizationId, templates, setTemplates, aiRule
                       Available Placeholders
                     </h4>
                     <div className="grid grid-cols-2 gap-2 text-sm">
-                      <div><code>{"{customer_name}"}</code> - Customer's name</div>
+                      <div><code>{"{customer_name}"}</code> - Customer&apos;s name</div>
                       <div><code>{"{business_name}"}</code> - Your business name</div>
                       <div><code>{"{review_rating}"}</code> - Review rating (1-5)</div>
                       <div><code>{"{review_text}"}</code> - Original review text</div>
