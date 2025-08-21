@@ -32,6 +32,7 @@ import {
   PlugZap,
   Camera,
   ChartBarIncreasingIcon,
+  Ticket,
 } from "lucide-react"
 import {
   Bolt,
@@ -157,10 +158,11 @@ const accordionNavItems = [
     icon: Megaphone,
     items: [
       { title: "Dashboard", url: "/dashboard/digital-marketing", icon: ChartBarIncreasingIcon },
+      { title: "Unified Inbox", url: "/dashboard/digital-marketing/reviews-management", icon: MessageSquare },
+      { title: "Tickets and Ops", url: "/dashboard/digital-marketing/ticket-ops", icon: Ticket },
       { title: "Google & Meta Ads", url: "/dashboard/digital-marketing/google-meta-ads", icon: Megaphone },
       { title: "Campaigns & Promotions", url: "/dashboard/digital-marketing/campaigns-promotions", icon: Gift },
-      { title: "Reviews Management", url: "/dashboard/digital-marketing/reviews-management", icon: MessageSquare },
-      { title: "Instagram Management", url: "/dashboard/digital-marketing/instagram-management", icon: Camera },
+      // { title: "Instagram Management", url: "/dashboard/digital-marketing/instagram-management", icon: Camera },
       { title: "SEO Optimization", url: "/dashboard/digital-marketing/seo-optimization", icon: Leaf },
       { title: "Setup", url: "/dashboard/digital-marketing/setup", icon: Settings }
     ],

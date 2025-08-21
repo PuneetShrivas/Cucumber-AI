@@ -75,7 +75,6 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
                   autoResume={true}
                 />
                 <DataStreamHandler />
-                <DataStreamHandler />
               </SidebarInset>
             </SidebarProvider>
           </div>
@@ -85,7 +84,13 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   }
 
   return (
-    <>
+    <div>
+        <SiteHeader title="AI Assistant" />
+        <div className="flex flex-1 flex-col">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            <SidebarProvider defaultOpen={!isCollapsed}>
+              <AppSidebar user={user} />
+              <SidebarInset>
       <Chat
         id={chat.id}
         initialMessages={uiMessages}
@@ -95,7 +100,10 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         sessionId={session.user.id}
         autoResume={true}
       />
-      <DataStreamHandler />
-    </>
-  );
+    </SidebarInset>
+  </SidebarProvider>
+</div>
+</div>
+</div>
+);
 }
