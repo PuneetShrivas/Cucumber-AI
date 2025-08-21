@@ -1804,7 +1804,7 @@ export default function UnifiedInboxPage() {
                         <Bot className="h-4 w-4" />
                         <AlertDescription>
                           AI will generate personalized replies for each selected review based on the content and rating. 
-                          You'll be able to review each reply before it's sent.
+                          You&apos;ll be able to review each reply before it&apos;s sent.
                         </AlertDescription>
                       </Alert>
                     )}
