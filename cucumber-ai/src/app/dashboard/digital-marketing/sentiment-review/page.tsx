@@ -565,7 +565,7 @@ export default function InsightsPage() {
   return (
     <div className="flex-1 space-y-6 p-8">
       {/* Sticky Filter Controls */}
-      <div className="sticky top-2 z-20 bg-background p-4 rounded-md mb-4 border-b shadow-sm">
+      <div className="z-20 bg-background p-4 rounded-md mb-4 border-b shadow-sm">
         <div className="flex flex-wrap gap-3 items-center justify-between">
           <div className="flex flex-wrap gap-3 items-center">
             <Select value={selectedTimeframe} onValueChange={setSelectedTimeframe}>
@@ -699,10 +699,8 @@ export default function InsightsPage() {
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               placeholder="Search dish, outlet, competitor..."
-              className="w-56"
+              className="w-[750px]"
             />
-          </div>
-          <div className="flex gap-2 mt-2">
             <Button variant="ghost" size="sm" onClick={() => {
               setUserType("all");
               setSentimentType("all");
@@ -718,6 +716,22 @@ export default function InsightsPage() {
               Export
             </Button>
           </div>
+          {/*<div className="flex gap-2 mt-2">
+            <Button variant="ghost" size="sm" onClick={() => {
+              setUserType("all");
+              setSentimentType("all");
+              setSelectedCategories([]);
+              setSelectedOutlets([]);
+              setSearchTerm("");
+              setDateRange({ from: undefined, to: undefined });
+            }}>
+              Reset Filters
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+          </div>*/}
         </div>
       </div>
 
