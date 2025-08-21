@@ -162,6 +162,7 @@ const accordionNavItems = [
       { title: "Reviews Management", url: "/dashboard/digital-marketing/reviews-management", icon: MessageSquare },
       { title: "Instagram Management", url: "/dashboard/digital-marketing/instagram-management", icon: Camera },
       { title: "SEO Optimization", url: "/dashboard/digital-marketing/seo-optimization", icon: Leaf },
+      { title: "Setup", url: "/dashboard/digital-marketing/setup", icon: Settings }
     ],
   },
   {

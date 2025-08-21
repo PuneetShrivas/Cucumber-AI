@@ -213,7 +213,7 @@ const Sidebar = React.forwardRef<
           <SheetContent
             data-sidebar="sidebar"
             data-mobile="true"
-            className="w-[--sidebar-width] h-[calc(100vh-6rem)]  bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
+            className="w-[--sidebar-width] h-[calc(100vh-4rem)]  bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             style={
               {
                 '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -255,7 +255,7 @@ const Sidebar = React.forwardRef<
         <div
           data-slot="sidebar-container"
           className={cn(
-            "relative z-10 hidden h-[calc(100vh-4rem)] w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
+            "relative z-10 hidden h-full w-(--sidebar-width) transition-[left,right,width] duration-200 ease-linear md:flex",
             side === "left"
               ? "group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
               : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",
@@ -270,7 +270,7 @@ const Sidebar = React.forwardRef<
           <div
             data-sidebar="sidebar"
             data-slot="sidebar-inner"
-            className="bg-sidebar border-r-1 h-[calc(100vh-6rem)] group-data-[variant=floating]:border-sidebar-border flex w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+            className="bg-sidebar border-r-1 h-[calc(100vh)] group-data-[variant=floating]:border-sidebar-border flex w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
           >
             {children}
           </div>
@@ -426,7 +426,7 @@ const SidebarContent = React.forwardRef<
       ref={ref}
       data-sidebar="content"
       className={cn(
-        'flex h-[calc(100vh-4rem)] flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+        'flex h-[calc(100vh)] flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
         className,
       )}
       {...props}

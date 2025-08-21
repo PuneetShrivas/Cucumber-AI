@@ -15,6 +15,7 @@ interface MessagesProps {
   votes: Array<Vote> | undefined;
   messages: ChatMessage[];
   setMessages: UseChatHelpers<ChatMessage>['setMessages'];
+  toolCall: string;
   regenerate: UseChatHelpers<ChatMessage>['regenerate'];
   isReadonly: boolean;
   isArtifactVisible: boolean;
@@ -26,6 +27,7 @@ function PureMessages({
   votes,
   messages,
   setMessages,
+  toolCall,
   regenerate,
   isReadonly,
 }: MessagesProps) {
@@ -45,7 +47,7 @@ function PureMessages({
   return (
     <div
       ref={messagesContainerRef}
-      className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4 relative"
+      className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-auto pt-4 relative"
     >
       {messages.length === 0 && <Greeting />}
 
@@ -54,6 +56,7 @@ function PureMessages({
           key={message.id}
           chatId={chatId}
           message={message}
+          toolCall={toolCall}
           isLoading={status === 'streaming' && messages.length - 1 === index}
           vote={
             votes

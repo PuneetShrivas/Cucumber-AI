@@ -17,6 +17,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Check, ChevronDown } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { set } from 'zod';
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import Fuse from "fuse.js"
+
 
 export default function MenuPage() {
   const [menuItems, setMenuItems] = useState<any[]>([])
@@ -170,10 +173,21 @@ export default function MenuPage() {
     resetForm()
   }
   const filteredItems = menuItems.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    // const matchesSearch =
+    //   item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //   item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    const fuse = new Fuse(menuItems, {
+      keys: ["name", "description"],
+      threshold: 0.2,
+      ignoreLocation: true,
+      shouldSort: true
+    })
 
+    const searchResults =
+      searchQuery.trim() === ""
+      ? menuItems
+      : fuse.search(searchQuery).map((result) => result.item)
+    const matchesSearch = searchResults.some((searchItem) => searchItem.id === item.id)
     const matchesCategory = categoryFilter === "all" || item.category_id === categoryFilter
     return matchesSearch && matchesCategory
   })
@@ -181,7 +195,7 @@ export default function MenuPage() {
   return (
     <div className="min-h-screen ">
       <div className="max-w-7xl mx-auto space-y-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+        <div className="flex flex-col @md:flex-row justify-between items-start @md:items-center">
           <div>
             <h1 className="text-3xl font-bold">Menu Items</h1>
             <p className="text-muted-foreground">Manage all items available for this location</p>
@@ -193,7 +207,7 @@ export default function MenuPage() {
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col @md:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
             <Input
@@ -205,7 +219,7 @@ export default function MenuPage() {
           </div>
 
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full md:w-60">
+            <SelectTrigger className="w-full @md:w-60">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue placeholder="Filter by category" />
             </SelectTrigger>
@@ -230,7 +244,7 @@ export default function MenuPage() {
         </div>
 
         {/* Grid of Menu Items */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 @sm:grid-cols-2 @md:grid-cols-3 xl:grid-cols-4 gap-x gap-6">
           <AnimatePresence mode="wait">
             {filteredItems.map((item) => {
               const availability = item.menu_item_locations?.[0]?.is_available ?? true
@@ -245,17 +259,17 @@ export default function MenuPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                 >
-                  <Card className="shadow-sm transition hover:shadow-md border overflow-hidden py-0">
-                    <div className="relative">
+                  <Card className="shadow-sm transition hover:shadow-md border gap-0 overflow-hidden py-0">
+                    <div className="relative h-40 @sm:h-48 @md:h-56 @lg:h-64">
                       {item.image_url ? (
                         <img
                           src={item.image_url}
                           alt={item.name}
-                          className="w-full h-60 object-cover"
+                          className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="h-60 flex items-center justify-center bg-muted">
-                          <ImageIcon className="w-10 h-10 text-muted-foreground" />
+                        <div className="w-full h-full flex items-center justify-center bg-muted">
+                          <ImageIcon className="w-8 h-8 @md:w-10 @md:h-10 text-muted-foreground" />
                         </div>
                       )}
 
@@ -269,22 +283,34 @@ export default function MenuPage() {
 
                     <div className="p-4 space-y-3">
                       <div className="flex justify-between items-center">
-                        <h3 className="text-base font-semibold">{item.name}</h3>
+                        <Tooltip>
+                          <TooltipTrigger className="w-fit text-left text-base font-semibold line-clamp-1 overflow-hidden">
+                            {item.name}
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <span className="w-fit">{item.name}</span>
+
+                          </TooltipContent>
+
+                        </Tooltip>
+
                         <span className="text-emerald-600 font-semibold text-base">
                           ₹{parseFloat(price).toFixed(2)}
                         </span>
                       </div>
 
-                      <p className="text-sm text-muted-foreground leading-tight">
-                        {item.description}
+
+
+                      <p className="text-sm text-muted-foreground leading-tight line-clamp-2 h-9 overflow-hidden">
+                        {item.description || "\u00A0"}
                       </p>
 
-                      <div className="flex justify-between items-center pt-2">
-                        <div className="flex items-center space-x-2">
+
+                      <div className="flex flex-wrap gap-2 w-full justify-between pt-2">
+                        <div className="flex items-center space-x-2 w-full">
                           <Switch checked={availability} disabled />
                           <Label className="text-sm">Available</Label>
                         </div>
-
                         <div className="flex gap-1">
                           <Button
                             variant="outline"
@@ -341,7 +367,7 @@ export default function MenuPage() {
             }}
             className="space-y-6"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 @md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Item Name *</Label>
                 <Input
@@ -378,7 +404,7 @@ export default function MenuPage() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 @md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="category">Category *</Label>
                 <Select
@@ -403,7 +429,7 @@ export default function MenuPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="image_url">Image</Label>
-                <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                <div className="flex flex-col gap-2 @md:flex-row @md:items-center">
                   <div className="relative flex-shrink-0">
                     <label
                       htmlFor="menu-image-upload"
@@ -507,7 +533,7 @@ export default function MenuPage() {
                       >
                         Upload Image
                       </Button>
-                      
+
                     </div>
                   </div>
                 </div>
@@ -561,7 +587,7 @@ export default function MenuPage() {
               }}
               className="space-y-6"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 @md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-name">Item Name *</Label>
                   <Input
@@ -595,7 +621,7 @@ export default function MenuPage() {
                   onChange={(e) => setEditingItem({ ...editingItem, description: e.target.value })}
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 @md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="edit-category">Category *</Label>
                   <Select
@@ -619,7 +645,7 @@ export default function MenuPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="image_url">Image</Label>
-                  <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                  <div className="flex flex-col gap-2 @md:flex-row @md:items-center">
                     <div className="relative flex-shrink-0">
                       <label
                         htmlFor="menu-image-upload"
@@ -723,7 +749,7 @@ export default function MenuPage() {
                         >
                           Upload Image
                         </Button>
-                        
+
                       </div>
                     </div>
                   </div>

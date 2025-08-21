@@ -29,7 +29,11 @@ import { isProductionEnvironment } from '@/lib/chatbot/constants';
 import { myProvider } from '@/lib/chatbot/ai/providers';
 import { entitlementsByUserType } from '@/lib/chatbot/ai/entitlements';
 import { postRequestBodySchema, type PostRequestBody } from './schema';
-import {generateSQL, executeSQL, assessSQLSafety, checkSQLStatement} from '@/lib/chatbot/ai/tools/supabase-queries';
+// import { menuManager } from '@/lib/chatbot/ai/tools/agents/menu-manager';
+import { generateSQL } from '@/lib/chatbot/ai/tools/agents/generate-sql';
+import { assessSQL } from '@/lib/chatbot/ai/tools/agents/assess-sql';
+import { executeSQL } from '@/lib/chatbot/ai/tools/agents/execute-sql';
+import { getSchemaForTableNames } from '@/lib/chatbot/ai/tools/agents/get-schema';
 import { geolocation } from '@vercel/functions';
 import {
   createResumableStreamContext,
@@ -40,6 +44,7 @@ import { ChatSDKError } from '@/lib/chatbot/errors';
 import type { ChatMessage } from '@/lib/chatbot/types';
 import type { ChatModel } from '@/lib/chatbot/ai/models';
 import type { VisibilityType } from '@/components/chatbot/visibility-selector';
+import { webSearch } from '@/lib/chatbot/ai/tools/agents/web-search';
 
 export const maxDuration = 60;
 
@@ -191,10 +196,12 @@ export async function POST(request: Request) {
                 'updateDocument',
                 'requestSuggestions',
                 // 'getOrganizationDetails',
+                // 'menuManager',
                 'generateSQL',
+                'assessSQL',
                 'executeSQL',
-                'assessSQLSafety',
-                'checkSQLStatement',
+                'webSearch',
+                'getSchemaForTableNames',
               ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
@@ -206,11 +213,11 @@ export async function POST(request: Request) {
               session,
               dataStream,
             }),
-            // getOrganizationDetails,
-            generateSQL,
+            generateSQL: generateSQL({ organization_id: organizationId, location_id: activeLocation }),
+            assessSQL,
             executeSQL,
-            assessSQLSafety,
-            checkSQLStatement,
+            webSearch,
+            getSchemaForTableNames,
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,

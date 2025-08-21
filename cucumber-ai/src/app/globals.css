@@ -194,3 +194,26 @@ body {
     background-position: -200% 0;
   }
 }
+
+.scrollbar-hide-auto {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent;
+}
+
+/* WebKit-based browsers */
+.scrollbar-hide-auto::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-hide-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-hide-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.4);
+  border-radius: 4px;
+}
+
+.scrollbar-hide-auto::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.6);
+}

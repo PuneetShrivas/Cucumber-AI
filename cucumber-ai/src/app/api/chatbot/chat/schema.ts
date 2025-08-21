@@ -21,7 +21,7 @@ export const postRequestBodySchema = z.object({
     role: z.enum(['user']),
     parts: z.array(partSchema),
   }),
-  selectedChatModel: z.enum(['chat-model', 'chat-model-reasoning']),
+  selectedChatModel: z.enum(['chat-model', 'chat-model-reasoning', 'gpt-4.1', 'gpt-3.5-turbo']),
   selectedVisibilityType: z.enum(['public', 'private']),
   organizationId: z.string(),
   activeLocation: z.string(),

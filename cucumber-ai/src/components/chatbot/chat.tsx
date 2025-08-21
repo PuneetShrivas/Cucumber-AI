@@ -1,6 +1,6 @@
 'use client';
 
-import { DefaultChatTransport } from 'ai';
+import { DefaultChatTransport, tool } from 'ai';
 import { useChat } from '@ai-sdk/react';
 import { useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
@@ -16,7 +16,7 @@ import { unstable_serialize } from 'swr/infinite';
 import { getChatHistoryPaginationKey } from './sidebar-history';
 import { toast } from './toast';
 // import type { Session } from 'next-auth';
-import {createClient} from '@/lib/supabase/client';
+import { createClient } from '@/lib/supabase/client';
 import type { Session } from '@supabase/supabase-js';
 import { useSearchParams } from 'next/navigation';
 import { useChatVisibility } from '@/hooks/chatbot/use-chat-visibility';
@@ -25,6 +25,7 @@ import { ChatSDKError } from '@/lib/chatbot/errors';
 import type { Attachment, ChatMessage } from '@/lib/chatbot/types';
 import { useDataStream } from './data-stream-provider';
 import { user } from './../../lib/chatbot/db/schema';
+import { ViewDisplay } from './view-display';
 
 export function Chat({
   id,
@@ -51,14 +52,11 @@ export function Chat({
   const { mutate } = useSWRConfig();
   const { setDataStream } = useDataStream();
   const [input, setInput] = useState<string>('');
-
-  const [organizationId, setOrganizationId] = useState('');
-  const [activeLocation, setActiveLocation] = useState('');
-
-  useEffect(() => {
-    setOrganizationId(window.localStorage.getItem('organizationId') || '');
-    setActiveLocation(window.localStorage.getItem('activeLocation') || '');
-  }, []);
+  const [toolCall, setToolCall] = useState<string>('');
+ 
+  const organizationId = window.localStorage.getItem('organizationId') || '';
+  const activeLocation = window.localStorage.getItem('activeLocation') || '';
+  console.log('Organization ID:', organizationId, 'Active Location:', activeLocation);
   const {
     messages,
     setMessages,
@@ -103,8 +101,15 @@ export function Chat({
         });
       }
     },
+    onToolCall({ toolCall }: { toolCall: { toolName: string } }) {
+      setToolCall(toolCall.toolName)
+      if (toolCall.toolName === 'displayView') {
+        // Handle displayView tool call
+      }
+    }
   });
-
+  const [displayView, setDisplayView] = useState<string | null>('menu');
+  // const displayView = 'menu'
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
 
@@ -147,35 +152,72 @@ export function Chat({
           isReadonly={isReadonly}
           sessionId={sessionId}
         />
-
-        <Messages
-          chatId={id}
-          status={status}
-          votes={votes}
-          messages={messages}
-          setMessages={setMessages}
-          regenerate={regenerate}
-          isReadonly={isReadonly}
-          isArtifactVisible={isArtifactVisible}
-        />
-
-        <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
-          {!isReadonly && (
-            <MultimodalInput
+        {displayView ? (
+          <div className="px-4 h-full w-full flex flex-row gap-2">
+            <ViewDisplay view="menu" setDisplayViewAction={setDisplayView} />
+            <div className="flex flex-col w-1/2">
+              <Messages
+                chatId={id}
+                status={status}
+                votes={votes}
+                messages={messages}
+                toolCall={toolCall}
+                setMessages={setMessages}
+                regenerate={regenerate}
+                isReadonly={isReadonly}
+                isArtifactVisible={isArtifactVisible}
+              />
+              <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+                {!isReadonly && (
+                  <MultimodalInput
+                    chatId={id}
+                    input={input}
+                    setInput={setInput}
+                    status={status}
+                    stop={stop}
+                    attachments={attachments}
+                    setAttachments={setAttachments}
+                    messages={messages}
+                    setMessages={setMessages}
+                    sendMessage={sendMessage}
+                    selectedVisibilityType={visibilityType}
+                  />
+                )}
+              </form>
+            </div>
+          </div>
+        ) : (
+            <div className="flex flex-col h-full">
+            <Messages
               chatId={id}
-              input={input}
-              setInput={setInput}
               status={status}
-              stop={stop}
-              attachments={attachments}
-              setAttachments={setAttachments}
+              votes={votes}
               messages={messages}
+              toolCall={toolCall}
               setMessages={setMessages}
-              sendMessage={sendMessage}
-              selectedVisibilityType={visibilityType}
+              regenerate={regenerate}
+              isReadonly={isReadonly}
+              isArtifactVisible={isArtifactVisible}
             />
-          )}
-        </form>
+            <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+              {!isReadonly && (
+                <MultimodalInput
+                  chatId={id}
+                  input={input}
+                  setInput={setInput}
+                  status={status}
+                  stop={stop}
+                  attachments={attachments}
+                  setAttachments={setAttachments}
+                  messages={messages}
+                  setMessages={setMessages}
+                  sendMessage={sendMessage}
+                  selectedVisibilityType={visibilityType}
+                />
+              )}
+            </form>
+          </div>
+        )}
       </div>
 
       <Artifact
@@ -194,6 +236,7 @@ export function Chat({
         isReadonly={isReadonly}
         selectedVisibilityType={visibilityType}
       />
+
     </>
   );
 }

@@ -17,4 +17,15 @@ export const chatModels: Array<ChatModel> = [
     name: 'Reasoning model',
     description: 'Uses advanced reasoning',
   },
+  {
+    id: 'gpt-4.1',
+    name: 'GPT-4.1',
+    description: 'OpenAI GPT-4.1 model',
+  },
+  {
+    id: 'gpt-3.5-turbo',
+    name: 'GPT-3.5 Turbo',
+    description: 'OpenAI GPT-3.5 Turbo model',
+  },
+  
 ];

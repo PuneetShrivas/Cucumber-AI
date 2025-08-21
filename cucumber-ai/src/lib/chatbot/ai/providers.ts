@@ -4,6 +4,7 @@ import {
   wrapLanguageModel,
 } from 'ai';
 import { xai } from '@ai-sdk/xai';
+import {gateway} from '@ai-sdk/gateway';
 import {
   artifactModel,
   chatModel,
@@ -12,6 +13,7 @@ import {
 } from './models.test';
 import { isTestEnvironment } from '../constants';
 
+const availableModels = gateway.getAvailableModels();
 export const myProvider = isTestEnvironment
   ? customProvider({
       languageModels: {
@@ -29,7 +31,10 @@ export const myProvider = isTestEnvironment
           middleware: extractReasoningMiddleware({ tagName: 'think' }),
         }),
         'title-model': xai('grok-2-1212'),
-        'artifact-model': xai('grok-2-1212'),
+        // 'gpt-4.1': openai('gpt-4.1'),
+        // 'gpt-3.5-turbo': openai('gpt-3.5-turbo'),
+        'gpt-4.1': gateway('openai/gpt-4.1'),
+        'gpt-3.5-turbo': gateway('openai/gpt-3.5-turbo'),
       },
       imageModels: {
         'small-model': xai.imageModel('grok-2-image'),

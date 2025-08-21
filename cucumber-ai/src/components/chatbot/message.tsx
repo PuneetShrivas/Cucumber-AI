@@ -1,7 +1,7 @@
 'use client';
 import cx from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import type { Vote } from '@/lib/chatbot/db/schema';
 import { DocumentToolCall, DocumentToolResult } from './document';
 import { PencilEditIcon, SparklesIcon } from './icons';
@@ -19,6 +19,7 @@ import { MessageReasoning } from './message-reasoning';
 import type { UseChatHelpers } from '@ai-sdk/react';
 import type { ChatMessage } from '@/lib/chatbot/types';
 import { useDataStream } from './data-stream-provider';
+import { ChevronDown, Loader2 } from 'lucide-react';
 
 // Type narrowing is handled by TypeScript's control flow analysis
 // The AI SDK provides proper discriminated unions for tool calls
@@ -29,6 +30,7 @@ const PurePreviewMessage = ({
   vote,
   isLoading,
   setMessages,
+  toolCall,
   regenerate,
   isReadonly,
   requiresScrollPadding,
@@ -38,16 +40,41 @@ const PurePreviewMessage = ({
   vote: Vote | undefined;
   isLoading: boolean;
   setMessages: UseChatHelpers<ChatMessage>['setMessages'];
+  toolCall: string;
   regenerate: UseChatHelpers<ChatMessage>['regenerate'];
   isReadonly: boolean;
   requiresScrollPadding: boolean;
 }) => {
   const [mode, setMode] = useState<'view' | 'edit'>('view');
-
+  const [isExpanded, setIsExpanded] = useState(false);
   const attachmentsFromMessage = message.parts.filter(
     (part) => part.type === 'file',
   );
-
+  const [toolCallList, setToolCallList] = useState<string[]>([]);
+  const [toolCallTimes, setToolCallTimes] = useState<number[]>([]);
+  const [lastToolStartTime, setLastToolStartTime] = useState<number | null>(null);
+  
+  useEffect(() => {
+    if (toolCall) {
+      const currentTime = Date.now();
+      
+      if (lastToolStartTime !== null) {
+        // Record the time for the previous tool call
+        setToolCallTimes(prev => [...prev, currentTime - lastToolStartTime]);
+      }
+      
+      setToolCallList(prev => [...prev, toolCall]);
+      setLastToolStartTime(currentTime);
+    }
+  }, [toolCall]);
+  
+  useEffect(() => {
+    // Record time for the last tool call when loading completes
+    if (!isLoading && lastToolStartTime !== null && toolCallList.length > toolCallTimes.length) {
+      setToolCallTimes(prev => [...prev, Date.now() - lastToolStartTime]);
+      setLastToolStartTime(null);
+    }
+  }, [isLoading, lastToolStartTime, toolCallList.length, toolCallTimes.length]);
   useDataStream();
 
   return (
@@ -98,6 +125,53 @@ const PurePreviewMessage = ({
                 ))}
               </div>
             )}
+
+            {message.role === 'assistant' && (<div className="flex w-fit items-center gap-2 rounded-lg px-4 py-2 bg-muted">
+              {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <Status toolCall={toolCall} />
+              </>
+              ) : (
+              <div className="flex flex-col w-full">
+                <div 
+                className="flex items-center cursor-pointer" 
+                onClick={() => setIsExpanded(!isExpanded)}
+                >
+                <span className="mr-2">Completed in {toolCallList.length} steps</span>
+                <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                </div>
+                
+                {isExpanded && (
+                <div className="border-t">
+                  {toolCallList.map((call, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground">{`${index + 1}. `}</span>
+                    
+                    {/* <span className='text-muted-foreground'>{call.replaceAll('...','')}</span> */}
+                    <CompletedStatus toolCall={call} />
+                    <span className="text-xs text-muted-foreground">{" in "}{(toolCallTimes[index]/1000).toFixed(1)}s</span>
+                  </div>
+                  ))}
+                </div>
+                )}
+              </div>
+              )}
+            </div>)}
+
+
+            {/* {isLoading ? (
+              <>
+                {message.role === 'assistant' && (<div className="flex w-fit items-center gap-2 rounded-lg px-4 py-2 bg-muted">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Status toolCall={toolCall} />
+                </div>)
+                }
+              </>
+            ) : (
+              <>
+              </>
+            )} */}
 
             {message.parts?.map((part, index) => {
               const { type } = part;
@@ -371,3 +445,57 @@ export const ThinkingMessage = () => {
     </motion.div>
   );
 };
+
+const Status = ({ toolCall  }: { toolCall: string }) => {
+  switch (toolCall) {
+    case 'getWeather':
+      return <span>Getting weather information...</span>;
+    case 'getLatLongFromCity':
+      return <span>Getting latitude and longitude from city...</span>;
+    case 'createDocument':
+      return <span>Creating document...</span>;
+    case 'updateDocument':
+      return <span>Updating document...</span>;
+    case 'requestSuggestions':
+      return <span>Requesting suggestions...</span>;
+    case 'generateSQL':
+      return <span>Generating SQL...</span>;
+    case 'assessSQL':
+      return <span>Assessing SQL...</span>;
+    case 'executeSQL':
+      return <span>Executing SQL...</span>;
+    case 'getSchemaForTableNames':
+      return <span>Getting schema for table names...</span>;
+    case 'webSearch':
+      return <span>Searching the web...</span>
+    default:
+      return <span>Thinking...</span>;
+  }
+};
+
+const CompletedStatus = ({ toolCall }: { toolCall: string }) => {
+  switch (toolCall) {
+    case 'getWeather':
+      return <span>Retrieved weather information.</span>;
+    case 'getLatLongFromCity':
+      return <span>Retrieved latitude and longitude.</span>;
+    case 'createDocument':
+      return <span>Created Document</span>;
+    case 'updateDocument':
+      return <span>Updated Document</span>;
+    case 'requestSuggestions':
+      return <span>Requested Suggestions</span>;
+    case 'generateSQL':
+      return <span>Generated SQL</span>;
+    case 'assessSQL':
+      return <span>Assessed SQL</span>;
+    case 'executeSQL':
+      return <span>Executed SQL</span>;
+    case 'getSchemaForTableNames':
+      return <span>Retrieved schema</span>;
+    case 'webSearch':
+      return <span>Searched the web...</span>
+    default:
+      return <span>Task completed</span>;
+  }
+}
